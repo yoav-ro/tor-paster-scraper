@@ -18,7 +18,7 @@ const PasteSchema = mongoose.Schema({
       default: false,
     },
   });
-  const Pastes = mongoose.model("Pastes", PasteSchema);
+  const Paste = mongoose.model("Pastes", PasteSchema);
   
-  module.exports = Pastes;
+  module.exports = Paste;
   
