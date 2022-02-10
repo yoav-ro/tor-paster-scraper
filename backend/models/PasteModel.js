@@ -3,18 +3,19 @@ const mongoose= require("mongoose");
 const PasteSchema = mongoose.Schema({
     title: {
       type: String,
-      required,
+      required: true,
     },
     content: {
       type: String,
-      required,
+      required: true,
     },
     author: {
       type: String,
-      required,
+      required: true,
     },
     date: {
       type: Date,
+      required: true,
       default: false,
     },
   });
