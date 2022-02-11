@@ -1,5 +1,7 @@
 const Paste = require("../models/PasteModel");
+const validators = require("../utils/validators");
 
+//Returns all the pastes from the db
 async function getAllPastes() {
     try {
         const pastes = await Paste.find({});
@@ -9,9 +11,10 @@ async function getAllPastes() {
     }
 }
 
+//Validates and adds a single paste to the db
 async function addSinglePaste(pasteObj) {
     try {
-        if (validatePasteObject(pasteObj) && await isNewPaste(pasteObj)) {
+        if (validators.validatePasteObject(pasteObj) && await isNewPaste(pasteObj)) {
             const paste = new Paste(pasteObj);
             await paste.save();
             return { message: "Paste saved successfuly" }
@@ -24,6 +27,7 @@ async function addSinglePaste(pasteObj) {
     }
 }
 
+//Recieves a pastes array and adds it to the db
 async function addManyPastes(pastesArr) {
     try {
         for (let paste of pastesArr) {
@@ -35,6 +39,7 @@ async function addManyPastes(pastesArr) {
     }
 }
 
+//Returns the lastest paste added to the db (the paste with the latest date attribute)
 async function getLatestPaste() {
     try {
         const latestPaste = await Paste.find().sort({ date: -1 }).limit(1)
@@ -44,19 +49,10 @@ async function getLatestPaste() {
     }
 }
 
-function validatePasteObject(pasteObj) {
-    if (!isValidString(pasteObj.title) || !isValidString(pasteObj.author) || !isValidString(pasteObj.content)) {
-        return false;
-    }
-    if (!pasteObj.date || Object.prototype.toString.call(pasteObj.date) !== "[object Date]") {
-        return false;
-    }
-    return true;
-}
-
+//Check if the recieved paste is new (its date attribute is after the latest paste date attr in the db)
 async function isNewPaste(pasteObj) {
     const latestPaste = await getLatestPaste();
-    const numOfPastes= await Paste.count({});
+    const numOfPastes = await Paste.count({});
     if (numOfPastes === 0) {
         console.log("paste is new")
         return true;
@@ -67,11 +63,23 @@ async function isNewPaste(pasteObj) {
     }
 }
 
-function isValidString(str) {
-    if (!str || typeof (str) !== "string" || str.length <= 0) {
-        return false;
+//Gets all the pastes added after the input date
+async function getPastesFromDate(date) {
+    try {
+        if (validators.isDate(date)) {
+            const pastes = await Paste.find({
+                date: {
+                    $gte: date
+                }
+            })
+            return pastes;
+        }
+        else {
+            throw {message: "Invalid date"}
+        }
+    } catch (error) {
+        return error;
     }
-    return true;
 }
 
 module.exports = {
@@ -79,4 +87,5 @@ module.exports = {
     getLatestPaste,
     addManyPastes,
     addSinglePaste,
+    getPastesFromDate,
 }
