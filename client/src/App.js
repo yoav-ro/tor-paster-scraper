@@ -3,6 +3,7 @@ import { addPastes, updateDate } from "./actions";
 import { getAllPastes } from "./apiRequests"
 import { useDispatch } from "react-redux";
 import PastesList from "./components/PasteList"
+import NavBar from './components/Navbar';
 
 function App() {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ function App() {
 
   return (
     <div className="App">
+      <NavBar />
       <PastesList />
     </div>
   );
