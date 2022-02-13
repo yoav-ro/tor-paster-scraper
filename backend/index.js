@@ -15,21 +15,28 @@ mongoose.connection.on('connected', () => {
   console.log('MongoDB connected!');
 });
 
-// app.get("/update-db", async (req, res) => {
-//   try {
-//     const pastes = await getPastesData(onionURL);
-//     await pastesController.addManyPastes(pastes.reverse());
-//     res.json({ message: "Pastes added successfully" })
-//   } catch (error) {
-//     res.json(error)
-//   }
-// })
+app.get("/update-db", async (req, res) => {
+  try {
+    const pastes = await getPastesData(onionURL);
+    await pastesController.addManyPastes(pastes.reverse());
+    res.json({ message: "Pastes added successfully" })
+  } catch (error) {
+    res.json(error)
+  }
+})
 
 app.get("/get-pastes", async (req, res) => {
   try {
     const date = req.body.date;
-    const pastes = await pastesController.getPastesFromDate(date);
-    res.json(pastes);
+    if (date) {
+      const pastes = await pastesController.getPastesFromDate(date);
+      res.json(pastes);
+    }
+    else{
+      const pastes= await pastesController.getAllPastes();
+      res.json(pastes);
+    }
+
   } catch (error) {
     res.json(error)
   }

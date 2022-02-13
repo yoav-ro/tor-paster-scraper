@@ -24,11 +24,11 @@ async function getPastesData(onionURL) {
         const $ = await cheerio.load(pastesHTML);
 
         $(".col-sm-12").each((index, parentElem) => {
-            const title = $(parentElem).find("div.pre-info.pre-header div.row div.col-sm-5 h4").text()
+            const title = $(parentElem).find("div.pre-info.pre-header div.row div.col-sm-5 h4").text().trim();
             const footerStr = $(parentElem).find("div.pre-info.pre-footer div.row div.col-sm-6").text();
-            const author = footerStr.split(" ")[2];
+            const author =getAuthorName(footerStr.split(" ")[2]);
             const date = getDateString(footerStr);
-            const content = $(parentElem).find("div.well.well-sm.well-white.pre div.text ol").text();
+            const content = $(parentElem).find("div.well.well-sm.well-white.pre div.text ol").text().trim();
 
             const pasteObj = {
                 title: title,
@@ -47,6 +47,15 @@ function getDateString(footerStr) {
     const footerArr = footerStr.split(" ");
     const dateStr = footerArr[4] + " " + footerArr[5] + " " + footerArr[6] + " " + footerArr[7];
     return new Date(dateStr);
+}
+
+//Checks if the author is anonymous
+function getAuthorName(author) {
+    const anonNames = ["Guest", "Unknown", "Anonymous"];
+    if(anonNames.includes(author)){
+        return "";
+    }
+    return author;
 }
 
 module.exports = {

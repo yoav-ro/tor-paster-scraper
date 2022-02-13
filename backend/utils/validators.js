@@ -1,5 +1,5 @@
 //Checks if the input is a valid Date object
-function isDate(date){
+function isDate(date) {
     if (!date || Object.prototype.toString.call(date) !== "[object Date]") {
         return false;
     }
@@ -16,16 +16,17 @@ function isValidString(str) {
 
 //Checks if the recieved paste object is in the required format
 function validatePasteObject(pasteObj) {
-    if (!validators.isValidString(pasteObj.title) || !validators.isValidString(pasteObj.author) || !validators.isValidString(pasteObj.content)) {
+    if (!isValidString(pasteObj.title) || typeof (pasteObj.author) !== "string" || !isValidString(pasteObj.content)) {
         return false;
     }
-    if (!validators.isDate(pasteObj.date)) {
+    if (!isDate(pasteObj.date)) {
         return false;
     }
+
     return true;
 }
 
-module.exports={
+module.exports = {
     isDate,
     isValidString,
     validatePasteObject,

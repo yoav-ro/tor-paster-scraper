@@ -17,10 +17,10 @@ async function addSinglePaste(pasteObj) {
         if (validators.validatePasteObject(pasteObj) && await isNewPaste(pasteObj)) {
             const paste = new Paste(pasteObj);
             await paste.save();
-            return { message: "Paste saved successfuly" }
+            return;
         }
         else {
-            return { message: "Invalid input" }
+            throw { message: "Invalid input" }
         }
     } catch (error) {
         return error
@@ -33,7 +33,7 @@ async function addManyPastes(pastesArr) {
         for (let paste of pastesArr) {
             await addSinglePaste(paste);
         }
-        return { message: "Pastes saved successfuly" }
+        return { message: `Pastes saved successfuly` }
     } catch (error) {
         return error
     }
@@ -58,7 +58,6 @@ async function isNewPaste(pasteObj) {
         return true;
     }
     else {
-        console.log(latestPaste.date.toGMTString(), pasteObj.date.toGMTString())
         return latestPaste.date < pasteObj.date
     }
 }
