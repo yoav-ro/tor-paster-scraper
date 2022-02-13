@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const pastesController = require("./controllers/pasteController");
 const { getPastesData } = require("./utils/requests");
 const app = express();
@@ -7,6 +8,7 @@ require("dotenv").config();
 
 const port = process.env.PORT || 3001;
 app.use(express.json());
+app.use(cors());
 const onionURL = "http://strongerw2ise74v3duebgsvug4mehyhlpa7f6kfwnas7zofs3kov7yd.onion/all"
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
@@ -27,16 +29,24 @@ app.get("/update-db", async (req, res) => {
 
 app.get("/get-pastes", async (req, res) => {
   try {
+    const pastes = await pastesController.getAllPastes();
+    res.json(pastes.reverse());
+  } catch (error) {
+    res.json(error)
+  }
+})
+
+app.put("/get-pastes/date", async (req, res) => {
+  try {
     const date = req.body.date;
     if (date) {
-      const pastes = await pastesController.getPastesFromDate(date);
-      res.json(pastes);
+      const pastes = await pastesController.getPastesFromDate(new Date(date));
+      res.json(pastes.reverse());
     }
-    else{
-      const pastes= await pastesController.getAllPastes();
-      res.json(pastes);
+    else {
+      const pastes = await pastesController.getAllPastes();
+      res.json(pastes.reverse());
     }
-
   } catch (error) {
     res.json(error)
   }
@@ -52,8 +62,9 @@ app.get("/latest-paste", async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)
-  setInterval(() => {
+  setInterval(async () => {
     console.log("scraping")
-    //To implement -> Call a function to scrape the .onion page again
+    const pastes = await getPastesData(onionURL);
+    await pastesController.addManyPastes(pastes.reverse());
   }, 120000);
 })

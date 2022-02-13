@@ -7,15 +7,14 @@ function Paste({ pasteObj }) {
     const { title, content, date } = pasteObj;
 
     const author = !pasteObj.author ? "Anonymous" : pasteObj.author;
-    console.log(content)
     return (
         <Container className="pastes-container">
             <div className="headline">{title} / {author}</div>
-            <p>
+            <pre>
                 <ShowMoreText>
                     {content}
                 </ShowMoreText>
-            </p>
+            </pre>
             {new Date(date).toGMTString()}
         </Container>
     )

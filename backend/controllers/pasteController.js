@@ -54,7 +54,6 @@ async function isNewPaste(pasteObj) {
     const latestPaste = await getLatestPaste();
     const numOfPastes = await Paste.count({});
     if (numOfPastes === 0) {
-        console.log("paste is new")
         return true;
     }
     else {

@@ -6,11 +6,6 @@ export const addPastes = (newPastes) => (
     }
 )
 
-export const updateDate = () => ({
-    type: "SET_DATE",
-    description: "Updates the last update date",
-})
-
 export const initPastes = (pastes) => ({
     type: "INIT_PASTES",
     description: "Sets the pastes",

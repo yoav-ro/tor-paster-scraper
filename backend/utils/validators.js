@@ -1,6 +1,6 @@
 //Checks if the input is a valid Date object
 function isDate(date) {
-    if (!date || Object.prototype.toString.call(date) !== "[object Date]") {
+    if (!date || Object.prototype.toString.call(date) !== "[object Date]" || date.toString() ==="Invalid Date") {
         return false;
     }
     return true;

@@ -12,5 +12,10 @@ export async function getAllPastes() {
 }
 
 export async function getPastesFromDate(date) {
-
+    try {
+        const pastes = await axios.put(`${baseURL}/get-pastes/date`, { date: date });
+        return pastes;
+    } catch (error) {
+        return error;
+    }
 }
