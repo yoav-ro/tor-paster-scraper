@@ -1,16 +1,20 @@
 import React from "react";
+import { Container } from "react-bootstrap";
+import "./styles/pastes.css";
 
 function Paste({ pasteObj }) {
-    const { title, author, content, date } = pasteObj;
-
+    const { title, content, date } = pasteObj;
+    
+    const author = !pasteObj.author ? "Anonymous" : pasteObj.author;
+    console.log(content)
     return (
-        <div>
-            {title} / {author}
-            <div>
+        <Container className="pastes-container">
+            <div className="headline">{title} / {author}</div>
+            <p>
                 {content}
-            </div>
-            {date}
-        </div>
+            </p>
+            {new Date(date).toGMTString()}
+        </Container>
     )
 }
 
