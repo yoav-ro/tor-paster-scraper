@@ -1,0 +1,10 @@
+.pastes-container {
+    border-style: solid;
+    border-radius: 15px;
+    margin-top: 10px;
+}
+
+.headline{
+    background-color: rgb(160, 160, 160);
+    font-weight: bold;
+}
