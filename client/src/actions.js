@@ -5,9 +5,3 @@ export const addPastes = (newPastes) => (
         newPastes: newPastes,
     }
 )
-
-export const initPastes = (pastes) => ({
-    type: "INIT_PASTES",
-    description: "Sets the pastes",
-    pastes: pastes
-})

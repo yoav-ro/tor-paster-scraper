@@ -17,6 +17,12 @@ function App() {
     date.current = new Date();
   }
 
+  // const refreshPastes = (date) => {
+  //   return (dispatch)=>{
+  //     dispatch(addPastes)
+  //   }
+  // }
+
   useEffect(() => {
     refreshPastes(dateRef)
     setInterval(() => {
